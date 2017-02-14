@@ -424,17 +424,17 @@ class DateFunctionsTests(unittest.TestCase):
     def test_add_month(self):
         c = self.dt + Interval(months=1)
 
-        self.assertEqual("\"dt\"+INTERVAL \'1 MONTH\'", str(c))
+        self.assertEqual("\"dt\"+INTERVAL \'1\' MONTH", str(c))
 
     def test_add_quarter(self):
         c = self.dt + Interval(quarters=1)
 
-        self.assertEqual("\"dt\"+INTERVAL \'1 QUARTER\'", str(c))
+        self.assertEqual("\"dt\"+INTERVAL \'1 QUARTER\' MONTH", str(c))
 
     def test_add_year(self):
         c = self.dt + Interval(years=1)
 
-        self.assertEqual("\"dt\"+INTERVAL \'1 YEAR\'", str(c))
+        self.assertEqual("\"dt\"+INTERVAL \'1\' YEAR", str(c))
 
     def test_add_second_microsecond(self):
         c = self.dt + Interval(seconds=1, microseconds=1)
@@ -499,7 +499,7 @@ class DateFunctionsTests(unittest.TestCase):
     def test_add_value_complex_expressions(self):
         c = self.dt + Interval(quarters=1) + Interval(weeks=1)
 
-        self.assertEqual("\"dt\"+INTERVAL \'1 QUARTER\'+INTERVAL \'1 WEEK\'", str(c))
+        self.assertEqual("\"dt\"+INTERVAL \'1 QUARTER\' MONTH+INTERVAL \'1 WEEK\'", str(c))
 
     def _test_extract_datepart(self, date_part):
         q = Q.from_(self.t).select(fn.Extract(date_part, self.t.foo))

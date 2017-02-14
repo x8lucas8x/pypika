@@ -681,10 +681,25 @@ class Interval(object):
                 largest=self.largest,
                 smallest=self.smallest,
             ) if self.largest != self.smallest else self.largest
-        return 'INTERVAL \'{expr} {unit}\''.format(
-            expr=expr,
-            unit=unit,
-        )
+
+        if unit in ['YEAR', 'MONTH']:
+            # Quarter is not a valid interval qualifier and should be dealt with separately.
+            return 'INTERVAL \'{expr}\' {unit}'.format(
+                expr=expr,
+                unit=unit,
+            )
+        elif unit == 'QUARTER':
+            return 'INTERVAL \'{expr} QUARTER\' MONTH'.format(
+                expr=expr,
+                unit=unit,
+            )
+        else:
+            # This has day as it's maximum interval granularity. So months are counted as 30 days, which is
+            # essentially wrong. For the same reason this does not take into account leap years.
+            return 'INTERVAL \'{expr} {unit}\''.format(
+                expr=expr,
+                unit=unit,
+            )
 
 
 class Pow(Function):
